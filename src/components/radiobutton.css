@@ -1,0 +1,8 @@
+.radio-button-component {
+  display: inline-flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  margin: 0 5px;
+}
