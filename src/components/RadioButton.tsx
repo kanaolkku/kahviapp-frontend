@@ -1,5 +1,5 @@
-import React, { Fragment } from "react";
-import "./radiobutton.css";
+import React from "react";
+import "./Radiobutton.css";
 interface MyProps {
   handleRadio: Function;
   value: string;
@@ -8,6 +8,7 @@ interface MyProps {
 }
 
 const RadioButton = ({ handleRadio, value, name, checked }: MyProps) => {
+  // assign the radiobutton an id that is almost surely unique
   const id = `radio + ${value}`;
   return (
     <div className="radio-button-component">

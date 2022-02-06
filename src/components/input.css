@@ -1,1 +1,6 @@
-
+.input-component input {
+  font-size: 1rem;
+  padding: 5px;
+  margin-bottom: 10px;
+  margin-top: 3px;
+}

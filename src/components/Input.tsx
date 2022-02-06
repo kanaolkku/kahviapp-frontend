@@ -1,5 +1,5 @@
 import React from "react";
-import "./input.css";
+import "./Input.css";
 
 interface MyProps {
   value: string;
@@ -9,7 +9,10 @@ interface MyProps {
 }
 
 const Input = ({ value, handler, placeholder }: MyProps) => {
-  const inputHandler = (value: string) => {
+  // I do not know why I made a separate input component, since I didn't implement real-time form validation
+  // Having it surely doesn't hurt
+
+  const inputHandler = (value: string): void => {
     handler(value);
   };
 

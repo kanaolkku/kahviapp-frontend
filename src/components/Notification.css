@@ -1,0 +1,7 @@
+.success p {
+  color: green;
+}
+
+.error p {
+  color: red;
+}

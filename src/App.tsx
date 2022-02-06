@@ -1,82 +1,61 @@
-import React, { FormEvent, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
-import Input from "./components/Input";
-import RadioButton from "./components/RadioButton";
+import CoffeeForm from "./components/CoffeeForm";
 
-interface FieldsState {
+interface coffeeItem {
   name: string;
-  weight: string;
-  price: string;
-  roast: string;
+  weight: Number;
+  price: number;
+  roast: Number;
 }
+
 function App() {
-  const [fields, setFields] = useState<FieldsState>({
-    name: "",
-    weight: "",
-    price: "",
-    roast: "1",
-  });
+  const [coffeeData, setCoffeeData] = useState<coffeeItem[]>([]);
 
-  const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(fields);
+  // function for getting coffee data
+  const getData = () => {
+    fetch("http://localhost:3001/api/coffees")
+      .then((data) => data.json())
+      .then((data) => {
+        setCoffeeData(data);
+      })
+      .catch((err) => console.log(err));
   };
 
-  const handleName = (name: string) => {
-    setFields({ ...fields, name });
-  };
-
-  const handleWeight = (weight: string) => {
-    setFields({ ...fields, weight });
-  };
-
-  const handlePrice = (price: string) => {
-    setFields({ ...fields, price });
-  };
-
-  const handleRadio = (selected: string) => {
-    setFields({ ...fields, roast: selected });
-  };
+  useEffect(() => {
+    // get coffee data from backend
+    getData();
+  }, []);
 
   return (
     <div className="App">
-      <form onSubmit={handleFormSubmit}>
-        <span>Name</span>
-        <Input value={fields.name} handler={handleName} />
-        <span>Weight</span>
-        <Input value={fields.weight} handler={handleWeight} />
-        <span>Price</span>
-        <Input value={fields.price} handler={handlePrice} />
-        <div className="radio-button-group">
-          <span>Roast level:</span>
-          <RadioButton
-            handleRadio={handleRadio}
-            value="1"
-            name="roast"
-            checked={true}
-          />
-          <RadioButton handleRadio={handleRadio} value="2" name="roast" />
-          <RadioButton handleRadio={handleRadio} value="3" name="roast" />
-          <RadioButton handleRadio={handleRadio} value="4" name="roast" />
-          <RadioButton handleRadio={handleRadio} value="5" name="roast" />
-        </div>
-        <button type="submit">Add Coffee!</button>
-      </form>
-
-      <table>
-        <tr>
-          <th>Name</th>
-          <th>Weight</th>
-          <th>Price</th>
-          <th>Roast</th>
-        </tr>
-        <tr>
-          <td>Hieno kahvi</td>
-          <td>500</td>
-          <td>5.99</td>
-          <td>2</td>
-        </tr>
-      </table>
+      <h1>Your favourite coffee list</h1>
+      <CoffeeForm getData={getData} />
+      <div className="coffee-list">
+        <h2>Your List: </h2>
+        <table data-testid="coffee-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Weight (g)</th>
+              <th>Roast</th>
+              <th>Price (€)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {coffeeData.map((coffeeItem, index) => {
+              return (
+                <tr key={index + "tr"} data-testid={"coffee-item-" + index}>
+                  <td>{coffeeItem.name}</td>
+                  <td>{coffeeItem.weight}</td>
+                  <td>{coffeeItem.roast}</td>
+                  <td>{coffeeItem.price}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
